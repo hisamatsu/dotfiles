@@ -1,0 +1,46 @@
+# my fzf setting
+export FZF_TMUX=1
+export FZF_TMUX_OPTS="-p 80%"
+
+# https://riq0h.jp/2023/11/26/204717/
+export FZF_DEFAULT_COMMAND="rg --files --hidden 2> /dev/null --follow --glob '!.git/*'"
+export FZF_DEFAULT_OPTS="--ansi --no-separator --no-scrollbar --reverse --border=none \
+--color=bg+:#1c1e26,bg:#1c1e26,spinner:#ee64ac,hl:#e95678 \
+--color=fg:#d5d8da,header:#e95678,info:#e95678,pointer:#ee64ac \
+--color=marker:#ee64ac,fg+:#d5d8da,prompt:#e95678,hl+:#e95678"
+export FZF_CTRL_R_OPTS="--reverse --preview 'echo {}' --preview-window=border-sharp,down:3:hidden:wrap --bind '?:toggle-preview'"
+export FZF_CTRL_T_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export FZF_CTRL_T_OPTS='--preview "bat  --color=always --style=header,grid --line-range :100 {}"'
+export FZF_ALT_C_COMMAND="fd -t d --hidden"
+export FZF_ALT_C_OPTS="--preview 'eza {} -h -T -F --no-user --no-time --no-filesize --no-permissions --long | head -200' --preview-window=border-sharp,hidden:right:60% --bind '?:toggle-preview'"
+
+fzfvi() {
+  local file=$(rg --files --hidden --follow --glob "!.git/*" | \
+              fzf --preview "bat  --color=always --style=header,grid --line-range :100 {}")
+  # Open the file if it exists
+  if [ -n "$file" ]; then
+    # Use the default editor if it's defined, otherwise vi
+    ${EDITOR:-vi} "$file"
+  fi
+}
+
+
+# https://qiita.com/kompiro/items/a09c0b44e7c741724c80
+# https://zenn.dev/nowa0402/articles/5eb780280f2523
+# ghq cd
+cdrepo() {
+  local repodir=$(ghq list | \
+                  fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")
+  if [ -n "$repodir" ]; then
+   cd $(ghq root)/$repodir
+  fi
+}
+
+# 選択したリポジトリをvscodeで開く
+coderepo() {
+  local repodir=$(ghq list | \
+                  fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")
+  if [ -n "$repodir" ]; then
+   code $(ghq root)/$repodir
+  fi
+}
