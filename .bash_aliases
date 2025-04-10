@@ -11,6 +11,7 @@ esac
 
 alias g='git'
 alias v='nvim'
+alias vi='nvim'
 alias vim='nvim'
 alias cat='bat -p --paging=never'
 
