@@ -10,10 +10,10 @@
         gr = grep
         lo = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
 [core]
-	autoCRLF = false
-	editor = nvim
-  filemode = true
-  pager = delta
+    autoCRLF = false
+    editor = nvim
+    filemode = true
+    pager = delta
 [branch]
 	autosetuprebase = always
 [merge]
@@ -30,6 +30,7 @@
     diffFilter = delta --color-only
 [delta]
     navigate = true    # use n and N to move between diff sections
+    side-by-side = true
 
     # delta detects terminal colors automatically; set one of these to disable auto-detection
     # dark = true
